@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ... */
+
+:root {
+  --background: 218 25% 100%;
+  --foreground: 218 5% 10%;
+  --card: 218 25% 100%;
+  --card-foreground: 218 5% 15%;
+  --popover: 218 25% 100%;
+  --popover-foreground: 218 95% 10%;
+  --primary: 218 93.5% 36.5%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 218 25% 90%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 180 25% 95%;
+  --muted-foreground: 218 5% 40%;
+  --accent: 180 25% 90%;
+  --accent-foreground: 218 5% 15%;
+  --destructive: 0 50% 50%;
+  --destructive-foreground: 218 5% 100%;
+  --border: 218 25% 82%;
+  --input: 218 25% 50%;
+  --ring: 218 93.5% 36.5%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 218 25% 10%;
+  --foreground: 218 5% 100%;
+  --card: 218 25% 10%;
+  --card-foreground: 218 5% 100%;
+  --popover: 218 25% 5%;
+  --popover-foreground: 218 5% 100%;
+  --primary: 218 93.5% 36.5%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 218 25% 20%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 180 25% 25%;
+  --muted-foreground: 218 5% 65%;
+  --accent: 180 25% 25%;
+  --accent-foreground: 218 5% 95%;
+  --destructive: 0 50% 50%;
+  --destructive-foreground: 218 5% 100%;
+  --border: 218 25% 50%;
+  --input: 218 25% 50%;
+  --ring: 218 93.5% 36.5%;
+  --radius: 0.5rem;
+}
+
+/* fonts */
+@font-face {
+  font-family: 'DM Sans';
+  src: url('../assets/fonts/DMSans-VariableFont.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  src: url('../assets/fonts/DMSans-Italic-VariableFont.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+.react-tel-input .form-input {
+  width: auto !important;
+  height: 40px !important;
+}
