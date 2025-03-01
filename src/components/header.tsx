@@ -14,11 +14,11 @@ export function Header() {
         <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-2">
             <img src={phoneSvg} alt="Phone" className="w-8 h-8" />
-            <span>0203 333 7777</span>
+            <span>0777 7254 310</span>
           </div>
           <div className="flex items-center space-x-2">
             <img src={whatsappSvg} alt="WhatsApp" className="w-8 h-8" />
-            <span>0786 775 1813</span>
+            <span>0777 7254 310</span>
           </div>
         </div>
         <div className='flex items-center space-x-2'>

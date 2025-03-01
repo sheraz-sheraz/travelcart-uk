@@ -1,50 +1,83 @@
 import { Plane, ArrowLeftRight, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { searchFlights } from "@/utils/api"; // API function
 import { useFlightStore } from "@/store/useFlightStore"; // Zustand store
 import { useNavigate } from "react-router-dom";
+
+import { useForm } from "react-hook-form";
 
 export function FlightSearchForm() {
   const navigate = useNavigate();
   const { setFlights } = useFlightStore(); // Store flight results in Zustand
 
-  // Form state (ensuring UI remains unchanged)
-  const [tripType, setTripType] = useState<"return" | "oneWay" | "direct">("return");
-  const [fromValue, setFromValue] = useState("SYD"); // Default: Sydney
-  const [toValue, setToValue] = useState("BKK");
-  const [departureDate, setDepartureDate] = useState("2024-01-14");
-  const [returnDate, setReturnDate] = useState("");
-  const [passengers, setPassengers] = useState("1 Adult, Economy");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const [tripType, setTripType] = useState("return");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [adults, setAdults] = useState(1);
+  const [children, setChildren] = useState(0);
+  const [infants, setInfants] = useState(0);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [cabinClass, setCabinClass]= useState("economy")
+  const [showContact, setShowContact] = useState(false)
+
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        setShowContact(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const watchReturnDate = watch("returnDate");
+
   // Swap "From" and "To" locations
   const handleSwap = () => {
-    const temp = fromValue;
-    setFromValue(toValue);
-    setToValue(temp);
+    const fromValue = watch("from");
+    const toValue = watch("to");
+    
+    if (fromValue && toValue) {
+      watch("from", toValue);
+      watch("to", fromValue);
+    }
   };
 
-  // Handle flight search
-  const handleSearch = async () => {
+  const onSubmit = async (data) => {
+    setShowContact(true)
     setLoading(true);
     setError("");
-
+if(showContact){
+  
+}
     try {
       const searchParams = {
-        originLocationCode: fromValue.substring(0, 3).toUpperCase(), // Extract IATA code
-        destinationLocationCode: toValue.substring(0, 3).toUpperCase(),
-        departureDate,
-        ...(returnDate && { returnDate: returnDate }),
-        adults: parseInt(passengers.charAt(0)), // Extract number of adults
-        travelClass: passengers.includes("Economy") ? "ECONOMY" : "BUSINESS",
+        originLocationCode: data.from.substring(0, 3).toUpperCase(),
+        destinationLocationCode: data.to.substring(0, 3).toUpperCase(),
+        departureDate: data.departureDate,
+        ...(data.returnDate && { returnDate: data.returnDate }),
+        adults: parseInt(data.passengers.charAt(0)),
+        travelClass: data.passengers.includes("Economy") ? "ECONOMY" : "BUSINESS",
         nonStop: tripType === "direct",
-        max: 10, // Get top 10 results
+        max: 10,
       };
 
       const results = await searchFlights(searchParams);
       setFlights(results);
-      navigate("/results"); // Redirect to flight results page
+      navigate("/results");
     } catch (err) {
       setError("Failed to fetch flights. Please try again.");
     }
@@ -53,107 +86,176 @@ export function FlightSearchForm() {
   };
 
   return (
-    <div className="w-full relative">
-      {/* Flight Type Buttons */}
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
       <div className="flex gap-4 mb-2">
-        <button
-          className={`flex items-center gap-2 px-4 py-2 rounded-full ${tripType === "oneWay" ? "text-blue-500" : "text-white"}`}
-          onClick={() => setTripType("oneWay")}
-        >
-          <input type="radio" checked={tripType === "oneWay"} onChange={() => { }} className="w-4 h-4 accent-blue-500" />
-          <span>One Way</span>
-        </button>
-        <button
-          className={`flex items-center gap-2 px-4 py-2 rounded-full ${tripType === "return" ? "text-blue-500" : "text-white"}`}
-          onClick={() => setTripType("return")}
-        >
-          <input type="radio" checked={tripType === "return"} onChange={() => { }} className="w-4 h-4 accent-blue-500" />
-          <span>Return</span>
-        </button>
-        <button
-          className={`flex items-center gap-2 px-4 py-2 rounded-full ${tripType === "direct" ? "text-blue-500" : "text-white"}`}
-          onClick={() => setTripType("direct")}
-        >
-          <input type="radio" checked={tripType === "direct"} onChange={() => { }} className="w-4 h-4 accent-blue-500" />
-          <span>Direct Flights</span>
-        </button>
+        {['oneWay', 'return', 'direct'].map((type) => (
+          <button
+            key={type}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full ${tripType === type ? "text-blue-500" : "text-white"}`}
+            onClick={() => setTripType(type)}
+            type="button"
+          >
+            <input type="radio" checked={tripType === type} readOnly className="w-4 h-4 accent-blue-500" />
+            <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+          </button>
+        ))}
       </div>
-
-      {/* Search Form (unchanged UI) */}
+      
       <div className="flex items-center justify-center gap-[3px] relative">
-        {/* From Field */}
-        <div className="w-[340px] h-[80px] bg-white shadow-sm -mr-[1px] rounded-l-xl">
-          <div className="px-4 pe-3 py-3 h-full">
+        <div className="w-[340px] h-[80px] bg-white shadow-sm rounded-l-xl">
+          <div className="px-4 py-3 h-full">
             <label className="block text-xs text-gray-500 mb-1">From</label>
-            <div className="flex items-center gap-2">
-              <Plane className="w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                value={fromValue}
-                onChange={(e) => setFromValue(e.target.value)}
-                className="w-full py-1 focus:outline-none text-gray-800"
-                placeholder="Country, City or Airport"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Swap Button */}
-        <button onClick={handleSwap} className="relative -mx-[21px] z-10 bg-white hover:bg-gray-50 rounded-full shadow-md p-2 border-2 border-black">
-          <ArrowLeftRight className="w-5 h-5 text-gray-600" />
-        </button>
-
-        {/* To Field */}
-        <div className="w-[264px] h-[80px] bg-white shadow-sm">
-          <div className="px-4 py-3 h-full ps-6">
-            <label className="block text-xs text-gray-500 mb-1">To</label>
             <input
-              type="text"
-              value={toValue}
-              onChange={(e) => setToValue(e.target.value)}
+              {...register("from", { required: "From location is required" })}
               className="w-full py-1 focus:outline-none text-gray-800"
               placeholder="Country, City or Airport"
             />
+            {errors.from && <p className="text-red-500 text-xs">{errors.from.message}</p>}
           </div>
         </div>
 
-        {/* Departure Date */}
+        <button type="button" onClick={handleSwap} className="-mx-[21px] z-10 bg-white hover:bg-gray-50 rounded-full shadow-md p-2 border-2 border-black">
+          <ArrowLeftRight className="w-5 h-5 text-gray-600" />
+        </button>
+
+        <div className="w-[264px] h-[80px] bg-white shadow-sm">
+          <div className="px-4 py-3 h-full">
+            <label className="block text-xs text-gray-500 mb-1">To</label>
+            <input
+              {...register("to", { required: "Destination is required" })}
+              className="w-full py-1 focus:outline-none text-gray-800"
+              placeholder="Country, City or Airport"
+            />
+            {errors.to && <p className="text-red-500 text-xs">{errors.to.message}</p>}
+          </div>
+        </div>
+
         <div className="w-[264px] h-[80px] bg-white shadow-sm">
           <div className="px-4 py-3 h-full">
             <label className="block text-xs text-gray-500 mb-1">Departure</label>
-            <input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} className="w-full py-1 focus:outline-none text-gray-800" />
+            <input
+              type="date"
+              {...register("departureDate", { required: "Departure date is required" })}
+              className="w-full py-1 focus:outline-none text-gray-800"
+            />
+            {errors.departureDate && <p className="text-red-500 text-xs">{errors.departureDate.message}</p>}
           </div>
         </div>
 
-        {/* Return Date */}
-        <div className="w-[264px] h-[80px] bg-white shadow-sm">
-          <div className="px-4 py-3 h-full">
-            <label className="block text-xs text-gray-500 mb-1">Return</label>
-            <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} className="w-full py-1 focus:outline-none text-gray-800" disabled={tripType !== "return"} />
+        {tripType === "return" && (
+          <div className="w-[264px] h-[80px] bg-white shadow-sm">
+            <div className="px-4 py-3 h-full">
+              <label className="block text-xs text-gray-500 mb-1">Return</label>
+              <input
+                type="date"
+                {...register("returnDate", {
+                  required: tripType === "return" ? "Return date is required" : false,
+                })}
+                className="w-full py-1 focus:outline-none text-gray-800"
+              />
+              {errors.returnDate && <p className="text-red-500 text-xs">{errors.returnDate.message}</p>}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Passengers & Class */}
         <div className="w-[264px] h-[80px] bg-white shadow-sm">
           <div className="px-4 py-3 h-full">
             <label className="block text-xs text-gray-500 mb-1">Travelers and Cabin Class</label>
-            <select value={passengers} onChange={(e) => setPassengers(e.target.value)} className="w-full py-1 focus:outline-none text-gray-800 bg-white">
-              <option>1 Adult, Economy</option>
-              <option>2 Adults, Economy</option>
-              <option>1 Adult, Business</option>
-              <option>2 Adults, Business</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Search Button */}
-        <button className="w-[80px] h-[80px] bg-blue-600 hover:bg-blue-700 text-white rounded-l-none rounded-r-xl flex items-center justify-center transition-colors" onClick={handleSearch} disabled={loading}>
-          {loading ? "..." : <Search size={60} className="w-8 h-8 text-3xl" />}
+            <button type="button" className="w-full py-2 bg-white border rounded text-gray-800 text-left" onClick={() => setShowDropdown(!showDropdown)}>
+            {adults === 1 && children === 0 && infants === 0 
+    ? `1 Adult, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`
+    : `${adults + children + infants} Passengers, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`
+  }
         </button>
-      </div>
+        {showDropdown && (
+          <div className="absolute bg-white border shadow-md mt-1 w-[200px] p-2">
+            {[{ label: "Adults", ageGroup:"18+", value: adults, setValue: setAdults, min: 1 }, { label: "Children", ageGroup:"2-17",value: children, setValue: setChildren, min: 0 }, { label: "Infants",ageGroup:"under 2", value: infants, setValue: setInfants, min: 0 }].map((item) => (
+              <div key={item.label} className="flex justify-between items-center py-1">
+                <span>{item.label} <text className="text-xs text-gray-500">({item.ageGroup})</text></span>
+                <div className="flex items-center gap-2">
+                  <button 
+                    type="button" 
+                    onClick={() => item.label !== "Adults" || item.value > 1 ? item.setValue(prev => Math.max(prev - 1, item.min)) : null} 
+                    className={`px-2 py-1 bg-gray-200 rounded ${item.label === "Adults" && item.value === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={item.label === "Adults" && adults === 1}
+                  >
+                    -
+                  </button>
+                  <span>{item.value}</span>
+                  <button type="button" onClick={() => item.setValue(prev => prev + 1)} className="px-2 py-1 bg-gray-200 rounded">+</button>
+                </div>
+              </div>
+            ))}
+            {/* Cabin Class Selection */}
+            <div className="mt-3">
+              <label className="block text-xs text-gray-500 mb-1">Cabin Class</label>
+              <select value={cabinClass} onChange={(e) => setCabinClass(e.target.value)} className="w-full py-1 focus:outline-none text-gray-800 bg-white border rounded">
+                <option value="economy">Economy</option>
+                <option value="premium-economy">Premium Economy</option>
+                <option value="business">Business</option>
+                <option value="first">First</option>
+              </select>
+            </div>
+            </div>
+            )}
+            {errors.passengers && <p className="text-red-500 text-xs">{errors.passengers.message}</p>}
+             </div>
+             </div>
 
-      {/* Error Message */}
-      {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+           <button type="submit" className="w-[80px] h-[80px] bg-blue-600 hover:bg-blue-700 text-white rounded-r-xl flex items-center justify-center transition-colors" disabled={loading}>
+          {loading ? "..." : <Search className="w-8 h-8" />}
+           </button>
+      </div>
+      {( showContact) && (
+  <div  ref={formRef} className="flex items-center justify-start gap-[3px] relative mt-2 ">
+    <div className="w-[340px] h-[80px] bg-white shadow-sm rounded-l-xl">
+      <div className="px-4 py-3 h-full">
+        <label className="block text-xs text-gray-500 mb-1">Email</label>
+        <input
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: "Enter a valid email",
+            },
+          })}
+          className="w-full py-1 focus:outline-none text-gray-800"
+          placeholder="Enter Email"
+        />
+        {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
+      </div>
     </div>
+
+    <div className="w-[264px] h-[80px] bg-white shadow-sm rounded-tr-xl rounded-br-xl">
+      <div className="px-4 py-3 h-full">
+        <label className="block text-xs text-gray-500 mb-1">Phone</label>
+        <input
+          {...register("phone", {
+            required: "Phone number is required",
+            pattern: {
+              value: /^[0-9]+$/,
+              message: "Only numbers are allowed",
+            },
+            minLength: {
+              value: 10,
+              message: "Phone number must be at least 10 digits",
+            },
+            maxLength: {
+              value: 15,
+              message: "Phone number cannot exceed 15 digits",
+            },
+          })}
+          className="w-full py-1 focus:outline-none text-gray-800"
+          placeholder="Enter Phone number"
+        />
+        {errors.phone && <p className="text-red-500 text-xs">{errors.phone.message}</p>}
+      </div>
+    </div>
+  </div>
+)}
+
+       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+    </form>
   );
 }
+
