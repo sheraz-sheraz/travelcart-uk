@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
-const contactRoutes = require("./routes/contactRoutes");
+const emailRoutes = require('./routes/emailRoutes');
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", userRoutes );
-app.use("/api/contact", contactRoutes );
+app.use("/api/contact", emailRoutes );
 
 app.listen(PORT,()=>{
     console.log(`server running on Port ${PORT}`)
