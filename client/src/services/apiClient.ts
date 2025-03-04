@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL:"http://localhost:8000/api" ,
+  baseURL:"https://travelcart.com",
+  //"http://localhost:8000/api" ,
   // || "https://api.travelcart.com",
   timeout: 10000,
   headers: {
