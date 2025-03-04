@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: process.env.VITE_API_BASE_URL || "https://api.travelcart.com",
+  baseURL:"http://localhost:8000/api" ,
+  // || "https://api.travelcart.com",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

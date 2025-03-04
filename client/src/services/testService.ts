@@ -20,3 +20,12 @@ export const createUser = async (userData: { name: string; email: string }) => {
     throw error;
   }
 };
+export const sendContactEmail = async (data)=>{
+  try {
+    const response = await apiClient.post(API_ENDPOINTS.sendEmail, data)
+    return response.data
+  }catch(error){
+console.log("Error sending Email", error)
+throw error;
+  }
+} 
