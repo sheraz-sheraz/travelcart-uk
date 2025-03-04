@@ -29,51 +29,52 @@ const SearchForm: React.FC = () => {
   };
 
   return (
-    <Card className="bg-shade-light p-6 shadow-lg rounded-md max-w-lg mx-auto">
-      <Form>
-        <Form.Group>
-          <Form.Label>Departure</Form.Label>
-          <Input
-            type="text"
-            placeholder="City or Airport"
-            value={departure}
-            onChange={(e) => setDeparture(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Destination</Form.Label>
-          <Input
-            type="text"
-            placeholder="City or Airport"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Date</Form.Label>
-          <Input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Passengers</Form.Label>
-          <Input
-            type="number"
-            min={1}
-            value={passengers}
-            onChange={(e) => setPassengers(Number(e.target.value))}
-          />
-        </Form.Group>
-        <Button
-          className="w-full bg-blue-500 text-white hover:bg-blue-600"
-          onClick={handleSearch}
-        >
-          Search Flights
-        </Button>
-      </Form>
-    </Card>
+    <></>
+    // <Card className="bg-shade-light p-6 shadow-lg rounded-md max-w-lg mx-auto">
+    //   <Form>
+    //     <Form.Group>
+    //       <Form.Label>Departure</Form.Label>
+    //       <Input
+    //         type="text"
+    //         placeholder="City or Airport"
+    //         value={departure}
+    //         onChange={(e) => setDeparture(e.target.value)}
+    //       />
+    //     </Form.Group>
+    //     <Form.Group>
+    //       <Form.Label>Destination</Form.Label>
+    //       <Input
+    //         type="text"
+    //         placeholder="City or Airport"
+    //         value={destination}
+    //         onChange={(e) => setDestination(e.target.value)}
+    //       />
+    //     </Form.Group>
+    //     <Form.Group>
+    //       <Form.Label>Date</Form.Label>
+    //       <Input
+    //         type="date"
+    //         value={date}
+    //         onChange={(e) => setDate(e.target.value)}
+    //       />
+    //     </Form.Group>
+    //     <Form.Group>
+    //       <Form.Label>Passengers</Form.Label>
+    //       <Input
+    //         type="number"
+    //         min={1}
+    //         value={passengers}
+    //         onChange={(e) => setPassengers(Number(e.target.value))}
+    //       />
+    //     </Form.Group>
+    //     <Button
+    //       className="w-full bg-blue-500 text-white hover:bg-blue-600"
+    //       onClick={handleSearch}
+    //     >
+    //       Search Flights
+    //     </Button>
+    //   </Form>
+    // </Card>
   );
 };
 
@@ -89,16 +90,17 @@ const FlightCard: React.FC<FlightCardProps> = ({
   duration,
 }) => {
   return (
-    <Card className="p-4 bg-shade-light shadow-md rounded-md border border-gray-200">
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold">{airline}</h2>
-        <span className="text-blue-500 font-bold">{price}</span>
-      </div>
-      <p className="text-sm text-gray-600 mt-2">Duration: {duration}</p>
-      <Button className="mt-4 bg-green-500 text-white hover:bg-green-600">
-        Book Now
-      </Button>
-    </Card>
+    // <Card className="p-4 bg-shade-light shadow-md rounded-md border border-gray-200">
+    //   <div className="flex justify-between items-center">
+    //     <h2 className="text-lg font-semibold">{airline}</h2>
+    //     <span className="text-blue-500 font-bold">{price}</span>
+    //   </div>
+    //   <p className="text-sm text-gray-600 mt-2">Duration: {duration}</p>
+    //   <Button className="mt-4 bg-green-500 text-white hover:bg-green-600">
+    //     Book Now
+    //   </Button>
+    // </Card>
+    <></>
   );
 };
 

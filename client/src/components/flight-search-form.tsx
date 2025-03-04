@@ -148,7 +148,7 @@ export function FlightSearchForm() {
               placeholder="Country, City or Airport"
             />
             {errors.from && (
-              <p className="text-red-500 text-xs">{errors.from.message}</p>
+              <p className="text-red-500 text-xs">{typeof errors.from?.message === 'string' ? errors.from.message : ''}</p>
             )}
           </div>
         </div>
@@ -170,7 +170,7 @@ export function FlightSearchForm() {
               placeholder="Country, City or Airport"
             />
             {errors.to && (
-              <p className="text-red-500 text-xs">{errors.to.message}</p>
+              <p className="text-red-500 text-xs">{typeof errors.to?.message === 'string' ? errors.to.message : ''}</p>
             )}
           </div>
         </div>
@@ -189,7 +189,7 @@ export function FlightSearchForm() {
             />
             {errors.departureDate && (
               <p className="text-red-500 text-xs">
-                {errors.departureDate.message}
+                {typeof errors.departureDate?.message === 'string' ? errors.departureDate.message : ''}
               </p>
             )}
           </div>
@@ -209,7 +209,7 @@ export function FlightSearchForm() {
               />
               {errors.returnDate && (
                 <p className="text-red-500 text-xs">
-                  {errors.returnDate.message}
+                  {typeof errors.returnDate?.message === 'string' ? errors.returnDate.message : ''}
                 </p>
               )}
             </div>
@@ -311,7 +311,7 @@ export function FlightSearchForm() {
             )}
             {errors.passengers && (
               <p className="text-red-500 text-xs">
-                {errors.passengers.message}
+                {typeof errors.passengers?.message === 'string' ? errors.passengers.message : ''}
               </p>
             )}
           </div>
@@ -345,7 +345,7 @@ export function FlightSearchForm() {
                 placeholder="Enter Email"
               />
               {errors.email && (
-                <p className="text-red-500 text-xs">{errors.email.message}</p>
+                <p className="text-red-500 text-xs">{typeof errors.email?.message === 'string' ? errors.email.message : ''}</p>
               )}
             </div>
           </div>
@@ -373,7 +373,7 @@ export function FlightSearchForm() {
                 placeholder="Enter Phone number"
               />
               {errors.phone && (
-                <p className="text-red-500 text-xs">{errors.phone.message}</p>
+                <p className="text-red-500 text-xs">{typeof errors.phone?.message === 'string' ? errors.phone.message : ''}</p>
               )}
             </div>
           </div>
