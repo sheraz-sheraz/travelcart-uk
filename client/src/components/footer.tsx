@@ -28,7 +28,7 @@ export function Footer() {
       links: [
         { text: 'Financial Security', href: '/security' },
         { text: 'Book Now Pay Later', href: '/payment-plans' },
-        { text: 'Video Conference', href: '/video-chat' },
+        { text: 'Video Conference', href: '/video-conferencing-support' },
       ]
     },
   ];

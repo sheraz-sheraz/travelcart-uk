@@ -2,13 +2,16 @@ import { Link } from 'react-router-dom';
 import BookingIcon from '@/assets/icons/booking-icon';
 import phoneSvg from '@/assets/icons/whitephone.svg';
 import whatsappSvg from '@/assets/icons/whitewhatsapp.svg';
+import travelcart from '@/assets/icons/travelcart.png';
+
 
 export function Header() {
   return (
     <header className="bg-black text-white py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold">
-          travelcart<span className="text-red-500">.uk</span>
+        <img src={travelcart} alt="Phone" className="w-193 h-32" />
+          {/* travelcart<span className="text-red-500">.uk</span> */}
         </Link>
 
         <div className="flex items-center space-x-8">
