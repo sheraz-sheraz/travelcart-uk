@@ -10,7 +10,7 @@ export function Header() {
     <header className="bg-black text-white py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold">
-        <img src={travelcart} alt="Phone" className="w-193 h-32" />
+        <img src={travelcart} alt="Phone" className="w-193 h-20" />
           {/* travelcart<span className="text-red-500">.uk</span> */}
         </Link>
 

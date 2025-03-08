@@ -148,7 +148,7 @@ export default function Home() {
 
       {/* Action Cards Section */}
       <div className="relative py-16">
-        <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2048&q=80")' }}></div>
+        <div className="absolute inset-0 bg-cover bg-center z-0" style={{backgroundColor:"black" }}></div>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {actions.map((action) => (
