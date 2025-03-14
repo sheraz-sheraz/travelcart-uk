@@ -1,4 +1,6 @@
 import axios from "axios";
+import apiClient from "./apiClient";
+import API_ENDPOINTS from "./endpoints";
 
 const CancelToken = axios.CancelToken;
 
@@ -18,8 +20,8 @@ export const getAmadeusData = params => {
   const source = CancelToken.source();
 
   // GET request with all params we need
-  const out = axios.get(
-    `/api/airports/?keyword=${searchQuery}&page=${page}&subType=${subTypeCheck}`,
+  const out = apiClient.get(
+    `/flights/airports/?keyword=${searchQuery}&page=${page}&subType=${"AIRPORT"}`,
     {
       cancelToken: source.token
     }
