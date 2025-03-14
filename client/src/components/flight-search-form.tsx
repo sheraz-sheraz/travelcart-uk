@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import { sendContactEmail } from "@/services/testService";
+import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
 
 export function FlightSearchForm() {
   const navigate = useNavigate();
@@ -58,9 +59,9 @@ export function FlightSearchForm() {
   };
 
   const onSubmit = async (data) => {
-    console.log("CLICKED")
+    console.log("CLICKED");
     if (showContact) {
-      console.log("CLICKED 22")
+      console.log("CLICKED 22");
       setLoading(true);
       setError("");
       try {
@@ -81,7 +82,7 @@ export function FlightSearchForm() {
 
       setLoading(false);
     } else {
-      console.log("CLICKED 33")
+      console.log("CLICKED 33");
       setShowContact(true);
     }
   };
@@ -116,7 +117,7 @@ export function FlightSearchForm() {
   //     setShowContact(true);
   //   }
   // };
-  console.log("showContact", showContact)
+  console.log("showContact", showContact);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
       <div className="flex gap-4 mb-2">
@@ -148,7 +149,11 @@ export function FlightSearchForm() {
               placeholder="Country, City or Airport"
             />
             {errors.from && (
-              <p className="text-red-500 text-xs">{typeof errors.from?.message === 'string' ? errors.from.message : ''}</p>
+              <p className="text-red-500 text-xs">
+                {typeof errors.from?.message === "string"
+                  ? errors.from.message
+                  : ""}
+              </p>
             )}
           </div>
         </div>
@@ -170,7 +175,11 @@ export function FlightSearchForm() {
               placeholder="Country, City or Airport"
             />
             {errors.to && (
-              <p className="text-red-500 text-xs">{typeof errors.to?.message === 'string' ? errors.to.message : ''}</p>
+              <p className="text-red-500 text-xs">
+                {typeof errors.to?.message === "string"
+                  ? errors.to.message
+                  : ""}
+              </p>
             )}
           </div>
         </div>
@@ -189,7 +198,9 @@ export function FlightSearchForm() {
             />
             {errors.departureDate && (
               <p className="text-red-500 text-xs">
-                {typeof errors.departureDate?.message === 'string' ? errors.departureDate.message : ''}
+                {typeof errors.departureDate?.message === "string"
+                  ? errors.departureDate.message
+                  : ""}
               </p>
             )}
           </div>
@@ -209,113 +220,131 @@ export function FlightSearchForm() {
               />
               {errors.returnDate && (
                 <p className="text-red-500 text-xs">
-                  {typeof errors.returnDate?.message === 'string' ? errors.returnDate.message : ''}
+                  {typeof errors.returnDate?.message === "string"
+                    ? errors.returnDate.message
+                    : ""}
                 </p>
               )}
             </div>
           </div>
         )}
 
-        <div className="w-[264px] h-[80px] bg-white shadow-sm">
-          <div className="px-4 py-3 h-full">
-            <label className="block text-xs text-gray-500 mb-1">
-              Travelers and Cabin Class
-            </label>
-            <button
-              type="button"
-              className="w-full py-2 bg-white border rounded text-gray-800 text-left"
-              onClick={() => setShowDropdown(!showDropdown)}
-            >
-              {adults === 1 && children === 0 && infants === 0
-                ? `1 Adult, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`
-                : `${adults + children + infants} Passengers, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`}
-            </button>
-            {showDropdown && (
-              <div className="absolute bg-white border shadow-md mt-1 w-[200px] p-2">
-                {[
-                  {
-                    label: "Adults",
-                    ageGroup: "18+",
-                    value: adults,
-                    setValue: setAdults,
-                    min: 1,
-                  },
-                  {
-                    label: "Children",
-                    ageGroup: "2-17",
-                    value: children,
-                    setValue: setChildren,
-                    min: 0,
-                  },
-                  {
-                    label: "Infants",
-                    ageGroup: "under 2",
-                    value: infants,
-                    setValue: setInfants,
-                    min: 0,
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex justify-between items-center py-1"
-                  >
-                    <span>
-                      {item.label}{" "}
-                      <text className="text-xs text-gray-500">
-                        ({item.ageGroup})
-                      </text>
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          item.label !== "Adults" || item.value > 1
-                            ? item.setValue((prev) =>
-                                Math.max(prev - 1, item.min)
-                              )
-                            : null
-                        }
-                        className={`px-2 py-1 bg-gray-200 rounded ${item.label === "Adults" && item.value === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
-                        disabled={item.label === "Adults" && adults === 1}
-                      >
-                        -
-                      </button>
-                      <span>{item.value}</span>
-                      <button
-                        type="button"
-                        onClick={() => item.setValue((prev) => prev + 1)}
-                        className="px-2 py-1 bg-gray-200 rounded"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                {/* Cabin Class Selection */}
-                <div className="mt-3">
-                  <label className="block text-xs text-gray-500 mb-1">
-                    Cabin Class
-                  </label>
-                  <select
-                    value={cabinClass}
-                    onChange={(e) => setCabinClass(e.target.value)}
-                    className="w-full py-1 focus:outline-none text-gray-800 bg-white border rounded"
-                  >
-                    <option value="economy">Economy</option>
-                    <option value="premium-economy">Premium Economy</option>
-                    <option value="business">Business</option>
-                    <option value="first">First</option>
-                  </select>
-                </div>
-              </div>
-            )}
-            {errors.passengers && (
-              <p className="text-red-500 text-xs">
-                {typeof errors.passengers?.message === 'string' ? errors.passengers.message : ''}
-              </p>
+<div className="w-[264px] h-[80px] bg-white shadow-sm">
+  <div className="px-4 py-3 h-full">
+    <label className="block text-xs text-gray-500 mb-1">
+      Travelers and Cabin Class
+    </label>
+    <RadixDropdownMenu.Root>
+      <RadixDropdownMenu.Trigger asChild>
+        <button
+          type="button"
+          className="w-full py-2 bg-white border rounded text-gray-800 text-left"
+        >
+          {adults === 1 && children === 0 && infants === 0
+            ? `1 Adult, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`
+            : `${adults + children + infants} Passengers, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`}
+        </button>
+      </RadixDropdownMenu.Trigger>
+
+      <RadixDropdownMenu.Content
+        align="start"
+        className="bg-white border shadow-md w-[220px] p-3 mt-1"
+      >
+        {/* Passengers Section */}
+        {[
+          {
+            label: "Adults",
+            ageGroup: "18+",
+            value: adults,
+            setValue: setAdults,
+            min: 1,
+          },
+          {
+            label: "Children",
+            ageGroup: "2-17",
+            value: children,
+            setValue: setChildren,
+            min: 0,
+          },
+          {
+            label: "Infants",
+            ageGroup: "under 2",
+            value: infants,
+            setValue: setInfants,
+            min: 0,
+          },
+        ].map((item) => (
+          <div
+            key={item.label}
+            className="flex justify-between items-center py-1"
+          >
+            <span>
+              {item.label}{" "}
+              <text className="text-xs text-gray-500">
+                ({item.ageGroup})
+              </text>
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() =>
+                  item.label !== "Adults" || item.value > 1
+                    ? item.setValue((prev) =>
+                        Math.max(prev - 1, item.min)
+                      )
+                    : null
+                }
+                className={`px-2 py-1 bg-gray-200 rounded ${item.label === "Adults" && item.value === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                disabled={item.label === "Adults" && adults === 1}
+              >
+                -
+              </button>
+              <span>{item.value}</span>
+              <button
+                type="button"
+                onClick={() => item.setValue((prev) => prev + 1)}
+                className="px-2 py-1 bg-gray-200 rounded"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        ))}
+
+        {/* Cabin Class Selection */}
+        <div className="mt-3">
+          <label className="block text-xs text-gray-500 mb-1">
+            Cabin Class
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {["economy", "premium-economy", "business", "first"].map(
+              (classType) => (
+                <button
+                  key={classType}
+                  type="button"
+                  className={`px-2 py-1 text-sm rounded text-center ${cabinClass === classType ? "bg-blue-500 text-white" : "bg-white text-gray-800 border"}`}
+                  onClick={() => setCabinClass(classType)}
+                >
+                  {classType.charAt(0).toUpperCase() +
+                    classType.slice(1)}
+                </button>
+              )
             )}
           </div>
         </div>
+      </RadixDropdownMenu.Content>
+    </RadixDropdownMenu.Root>
+
+    {errors.passengers && (
+      <p className="text-red-500 text-xs">
+        {typeof errors.passengers?.message === "string"
+          ? errors.passengers.message
+          : ""}
+      </p>
+    )}
+  </div>
+</div>
+
 
         <button
           type="submit"
@@ -345,7 +374,11 @@ export function FlightSearchForm() {
                 placeholder="Enter Email"
               />
               {errors.email && (
-                <p className="text-red-500 text-xs">{typeof errors.email?.message === 'string' ? errors.email.message : ''}</p>
+                <p className="text-red-500 text-xs">
+                  {typeof errors.email?.message === "string"
+                    ? errors.email.message
+                    : ""}
+                </p>
               )}
             </div>
           </div>
@@ -373,7 +406,11 @@ export function FlightSearchForm() {
                 placeholder="Enter Phone number"
               />
               {errors.phone && (
-                <p className="text-red-500 text-xs">{typeof errors.phone?.message === 'string' ? errors.phone.message : ''}</p>
+                <p className="text-red-500 text-xs">
+                  {typeof errors.phone?.message === "string"
+                    ? errors.phone.message
+                    : ""}
+                </p>
               )}
             </div>
           </div>
