@@ -425,65 +425,7 @@ export function FlightSearchForm() {
           {loading ? "..." : <Search className="w-8 h-8" />}
         </button>
       </div>
-      {showContact && (
-        <div className="flex items-center justify-start gap-[3px] relative mt-2 ">
-          <div className="w-[340px] h-[80px] bg-white shadow-sm rounded-l-xl">
-            <div className="px-4 py-3 h-full">
-              <label className="block text-xs text-gray-500 mb-1">Email</label>
-              <input
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                    message: "Enter a valid email",
-                  },
-                })}
-                className="w-full py-1 focus:outline-none text-gray-800"
-                placeholder="Enter Email"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs">
-                  {typeof errors.email?.message === "string"
-                    ? errors.email.message
-                    : ""}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="w-[264px] h-[80px] bg-white shadow-sm rounded-tr-xl rounded-br-xl">
-            <div className="px-4 py-3 h-full">
-              <label className="block text-xs text-gray-500 mb-1">Phone</label>
-              <input
-                {...register("phone", {
-                  required: "Phone number is required",
-                  pattern: {
-                    value: /^[0-9]+$/,
-                    message: "Only numbers are allowed",
-                  },
-                  minLength: {
-                    value: 10,
-                    message: "Phone number must be at least 10 digits",
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: "Phone number cannot exceed 15 digits",
-                  },
-                })}
-                className="w-full py-1 focus:outline-none text-gray-800"
-                placeholder="Enter Phone number"
-              />
-              {errors.phone && (
-                <p className="text-red-500 text-xs">
-                  {typeof errors.phone?.message === "string"
-                    ? errors.phone.message
-                    : ""}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+   
 
       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
     </form>
