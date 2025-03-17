@@ -75,7 +75,7 @@ export function FlightSearchForm() {
 
   useEffect(() => {
     setLoading(true);
-    const { out, source } = getAmadeusData({ page: 0, keywordTo });
+    const { out, source } = getAmadeusData({ page: 0, keyword:keywordTo });
 
     out
       .then((res) => {
@@ -168,6 +168,7 @@ export function FlightSearchForm() {
   //   }
   // };
   console.log("options", options);
+  console.log("options22", optionsTo);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
       <div className="flex gap-4 mb-2">
