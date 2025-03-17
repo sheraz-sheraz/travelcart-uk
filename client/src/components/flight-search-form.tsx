@@ -1,11 +1,16 @@
 import { Plane, ArrowLeftRight, Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { searchFlights } from "@/utils/api"; // API function
 import { useFlightStore } from "@/store/useFlightStore"; // Zustand store
 import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import { sendContactEmail } from "@/services/testService";
+import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
+import { getAmadeusData } from "@/services/amadeus";
+import axios from "axios";
+import { debounce } from "lodash";
+import { Autocomplete, TextField } from "@mui/material";
 
 export function FlightSearchForm() {
   const navigate = useNavigate();
@@ -25,24 +30,70 @@ export function FlightSearchForm() {
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
-  const [showDropdown, setShowDropdown] = useState(false);
+
   const [cabinClass, setCabinClass] = useState("economy");
   const [showContact, setShowContact] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [optionsTo, setOptionsTo] = useState([]);
+  const [search, setSearch] = useState("");
+  const [searchTo, setSearchTo] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [keywordTo, setKeywordTo] = useState("");
 
-  const formRef = useRef(null);
+  const debounceLoadData = useCallback(debounce(setKeyword, 1000), []);
+  const debounceLoadDataTo = useCallback(debounce(setKeywordTo, 1000), []);
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (formRef.current && !formRef.current.contains(event.target)) {
-  //       setShowContact(false);
-  //     }
-  //   };
+  useEffect(() => {
+    debounceLoadData(search);
+  }, [search]);
 
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
+  useEffect(() => {
+    debounceLoadDataTo(searchTo);
+  }, [searchTo]);
+
+  useEffect(() => {
+    setLoading(true);
+    const { out, source } = getAmadeusData({ page: 0, keyword });
+
+    out
+      .then((res) => {
+        if (!res.data.code) {
+          setOptions(res.data.data);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        axios.isCancel(err);
+        setOptions([]);
+        setLoading(false);
+      });
+
+    return () => {
+      source.cancel();
+    };
+  }, [keyword]);
+
+  useEffect(() => {
+    setLoading(true);
+    const { out, source } = getAmadeusData({ page: 0, keyword:keywordTo });
+
+    out
+      .then((res) => {
+        if (!res.data.code) {
+          setOptionsTo(res.data.data);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        axios.isCancel(err);
+        setOptionsTo([]);
+        setLoading(false);
+      });
+
+    return () => {
+      source.cancel();
+    };
+  }, [keywordTo]);
 
   const watchReturnDate = watch("returnDate");
 
@@ -58,9 +109,9 @@ export function FlightSearchForm() {
   };
 
   const onSubmit = async (data) => {
-    console.log("CLICKED")
+    console.log("CLICKED");
     if (showContact) {
-      console.log("CLICKED 22")
+      console.log("CLICKED 22");
       setLoading(true);
       setError("");
       try {
@@ -81,7 +132,7 @@ export function FlightSearchForm() {
 
       setLoading(false);
     } else {
-      console.log("CLICKED 33")
+      console.log("CLICKED 33");
       setShowContact(true);
     }
   };
@@ -116,7 +167,8 @@ export function FlightSearchForm() {
   //     setShowContact(true);
   //   }
   // };
-  console.log("showContact", showContact)
+  console.log("options", options);
+  console.log("options22", optionsTo);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
       <div className="flex gap-4 mb-2">
@@ -142,14 +194,28 @@ export function FlightSearchForm() {
         <div className="w-[340px] h-[80px] bg-white shadow-sm rounded-l-xl">
           <div className="px-4 py-3 h-full">
             <label className="block text-xs text-gray-500 mb-1">From</label>
-            <input
-              {...register("from", { required: "From location is required" })}
-              className="w-full py-1 focus:outline-none text-gray-800"
-              placeholder="Country, City or Airport"
+            <Autocomplete
+              options={options}
+              getOptionLabel={(option) => option.name}
+              onInputChange={(event, newInputValue) => setSearch(newInputValue)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  {...register("from", {
+                    required: "From location is required",
+                  })}
+                  placeholder="Country, City or Airport"
+                  error={!!errors.from}
+                  helperText={errors.from?.message as string}
+                  className="w-full focus:outline-none text-gray-800"
+                  InputProps={{
+                    ...params.InputProps,
+                    className:
+                      "w-full h-[40px] border border-gray-300 px-3 py-1 rounded focus:ring-2 focus:ring-blue-500",
+                  }}
+                />
+              )}
             />
-            {errors.from && (
-              <p className="text-red-500 text-xs">{typeof errors.from?.message === 'string' ? errors.from.message : ''}</p>
-            )}
           </div>
         </div>
 
@@ -164,14 +230,30 @@ export function FlightSearchForm() {
         <div className="w-[264px] h-[80px] bg-white shadow-sm">
           <div className="px-4 py-3 h-full">
             <label className="block text-xs text-gray-500 mb-1">To</label>
-            <input
-              {...register("to", { required: "Destination is required" })}
-              className="w-full py-1 focus:outline-none text-gray-800"
-              placeholder="Country, City or Airport"
+            <Autocomplete
+              options={optionsTo}
+              getOptionLabel={(option) => option.name}
+              onInputChange={(event, newInputValue) =>
+                setSearchTo(newInputValue)
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  {...register("to", {
+                    required: "Destination location is required",
+                  })}
+                  placeholder="Country, City or Airport"
+                  error={!!errors.to}
+                  helperText={errors.to?.message as string}
+                  className="w-full focus:outline-none text-gray-800"
+                  InputProps={{
+                    ...params.InputProps,
+                    className:
+                      "w-full h-[40px] border border-gray-300 px-3 py-1 rounded focus:ring-2 focus:ring-blue-500",
+                  }}
+                />
+              )}
             />
-            {errors.to && (
-              <p className="text-red-500 text-xs">{typeof errors.to?.message === 'string' ? errors.to.message : ''}</p>
-            )}
           </div>
         </div>
 
@@ -189,7 +271,9 @@ export function FlightSearchForm() {
             />
             {errors.departureDate && (
               <p className="text-red-500 text-xs">
-                {typeof errors.departureDate?.message === 'string' ? errors.departureDate.message : ''}
+                {typeof errors.departureDate?.message === "string"
+                  ? errors.departureDate.message
+                  : ""}
               </p>
             )}
           </div>
@@ -209,7 +293,9 @@ export function FlightSearchForm() {
               />
               {errors.returnDate && (
                 <p className="text-red-500 text-xs">
-                  {typeof errors.returnDate?.message === 'string' ? errors.returnDate.message : ''}
+                  {typeof errors.returnDate?.message === "string"
+                    ? errors.returnDate.message
+                    : ""}
                 </p>
               )}
             </div>
@@ -221,17 +307,23 @@ export function FlightSearchForm() {
             <label className="block text-xs text-gray-500 mb-1">
               Travelers and Cabin Class
             </label>
-            <button
-              type="button"
-              className="w-full py-2 bg-white border rounded text-gray-800 text-left"
-              onClick={() => setShowDropdown(!showDropdown)}
-            >
-              {adults === 1 && children === 0 && infants === 0
-                ? `1 Adult, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`
-                : `${adults + children + infants} Passengers, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`}
-            </button>
-            {showDropdown && (
-              <div className="absolute bg-white border shadow-md mt-1 w-[200px] p-2">
+            <RadixDropdownMenu.Root>
+              <RadixDropdownMenu.Trigger asChild>
+                <button
+                  type="button"
+                  className="w-full py-2 bg-white border rounded text-gray-800 text-left"
+                >
+                  {adults === 1 && children === 0 && infants === 0
+                    ? `1 Adult, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`
+                    : `${adults + children + infants} Passengers, ${cabinClass.charAt(0).toUpperCase() + cabinClass.slice(1)}`}
+                </button>
+              </RadixDropdownMenu.Trigger>
+
+              <RadixDropdownMenu.Content
+                align="start"
+                className="bg-white border shadow-md w-[220px] p-3 mt-1"
+              >
+                {/* Passengers Section */}
                 {[
                   {
                     label: "Adults",
@@ -291,27 +383,36 @@ export function FlightSearchForm() {
                     </div>
                   </div>
                 ))}
+
                 {/* Cabin Class Selection */}
                 <div className="mt-3">
                   <label className="block text-xs text-gray-500 mb-1">
                     Cabin Class
                   </label>
-                  <select
-                    value={cabinClass}
-                    onChange={(e) => setCabinClass(e.target.value)}
-                    className="w-full py-1 focus:outline-none text-gray-800 bg-white border rounded"
-                  >
-                    <option value="economy">Economy</option>
-                    <option value="premium-economy">Premium Economy</option>
-                    <option value="business">Business</option>
-                    <option value="first">First</option>
-                  </select>
+                  <div className="grid grid-cols-2 gap-2">
+                    {["economy", "premium-economy", "business", "first"].map(
+                      (classType) => (
+                        <button
+                          key={classType}
+                          type="button"
+                          className={`px-2 py-1 text-sm rounded text-center ${cabinClass === classType ? "bg-blue-500 text-white" : "bg-white text-gray-800 border"}`}
+                          onClick={() => setCabinClass(classType)}
+                        >
+                          {classType.charAt(0).toUpperCase() +
+                            classType.slice(1)}
+                        </button>
+                      )
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              </RadixDropdownMenu.Content>
+            </RadixDropdownMenu.Root>
+
             {errors.passengers && (
               <p className="text-red-500 text-xs">
-                {typeof errors.passengers?.message === 'string' ? errors.passengers.message : ''}
+                {typeof errors.passengers?.message === "string"
+                  ? errors.passengers.message
+                  : ""}
               </p>
             )}
           </div>
@@ -325,60 +426,7 @@ export function FlightSearchForm() {
           {loading ? "..." : <Search className="w-8 h-8" />}
         </button>
       </div>
-      {showContact && (
-        <div
-          ref={formRef}
-          className="flex items-center justify-start gap-[3px] relative mt-2 "
-        >
-          <div className="w-[340px] h-[80px] bg-white shadow-sm rounded-l-xl">
-            <div className="px-4 py-3 h-full">
-              <label className="block text-xs text-gray-500 mb-1">Email</label>
-              <input
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                    message: "Enter a valid email",
-                  },
-                })}
-                className="w-full py-1 focus:outline-none text-gray-800"
-                placeholder="Enter Email"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs">{typeof errors.email?.message === 'string' ? errors.email.message : ''}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="w-[264px] h-[80px] bg-white shadow-sm rounded-tr-xl rounded-br-xl">
-            <div className="px-4 py-3 h-full">
-              <label className="block text-xs text-gray-500 mb-1">Phone</label>
-              <input
-                {...register("phone", {
-                  required: "Phone number is required",
-                  pattern: {
-                    value: /^[0-9]+$/,
-                    message: "Only numbers are allowed",
-                  },
-                  minLength: {
-                    value: 10,
-                    message: "Phone number must be at least 10 digits",
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: "Phone number cannot exceed 15 digits",
-                  },
-                })}
-                className="w-full py-1 focus:outline-none text-gray-800"
-                placeholder="Enter Phone number"
-              />
-              {errors.phone && (
-                <p className="text-red-500 text-xs">{typeof errors.phone?.message === 'string' ? errors.phone.message : ''}</p>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+   
 
       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
     </form>
