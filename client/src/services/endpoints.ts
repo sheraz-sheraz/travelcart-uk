@@ -3,8 +3,8 @@ const API_ENDPOINTS = {
   getTrips: "/trips",
   createBooking: "/bookings",
   sendEmail:'/api/contact/send-email',
-  FLIGHT_OFFERS: "/api/flights/flight-offers",
-  CONFIRM_FLIGHT_OFFERS: "/api/flights/confirm-flight-offer",
+  FLIGHT_OFFERS: "/flights/flight-offers",
+  CONFIRM_FLIGHT_OFFERS: "/flights/confirm-flight-offer",
 
 };
 

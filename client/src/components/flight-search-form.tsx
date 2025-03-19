@@ -11,6 +11,7 @@ import { getAmadeusData } from "@/services/amadeus";
 import axios from "axios";
 import { debounce } from "lodash";
 import { Autocomplete, TextField } from "@mui/material";
+import { getFlightOffers } from "@/services/apiFlights"; 
 
 export function FlightSearchForm() {
   const navigate = useNavigate();
@@ -110,65 +111,39 @@ export function FlightSearchForm() {
 
   const onSubmit = async (data) => {
     console.log("CLICKED");
-    if (showContact) {
-      console.log("CLICKED 22");
-      setLoading(true);
-      setError("");
-      try {
-        const emailData = {
-          ...data,
-          tripType: tripType,
-          adults: adults,
-          children,
-          infants,
-          cabinClass,
-        };
-        console.log("EMAIL DATA", emailData);
-        const res = await sendContactEmail(emailData);
-        console.log("SEND EMAIL RESPONSE", res);
-      } catch (err) {
+    console.log("CLICKED 22");
+    setLoading(true);
+    setError("");
+    try {
+      const searchParams = {
+        originLocationCode: search,
+        destinationLocationCode: searchTo,
+        departureDate: data.departureDate,
+        ...(data.returnDate && { returnDate: data.returnDate }),
+        adults: adults,
+        children,
+        infants,
+        travelClass: cabinClass.toUpperCase(),
+      };
+      console.log("SEARCH PARAMS", searchParams);
+      const res = await getFlightOffers(searchParams);
+      if (res.status === 200) {
+        console.log("FLIGHT OFFERS RESPONSE", res.data.data);
+        setFlights(res.data.data);
+        navigate("/search-flights", { replace: true });
+      } else {
         setError("Failed to fetch flights. Please try again.");
       }
-
-      setLoading(false);
-    } else {
-      console.log("CLICKED 33");
-      setShowContact(true);
+      console.log("FLIGHT OFFERS RESPONSE", res);
+    } catch (err) {
+      setError("Failed to fetch flights. Please try again.");
     }
+
+    setLoading(false);
   };
 
-  // const onSubmit = async (data) => {
-  //   if (showContact) {
-  //     setLoading(true);
-  //     setError("");
-  //     try {
-  //       const searchParams = {
-  //         originLocationCode: data.from.substring(0, 3).toUpperCase(),
-  //         destinationLocationCode: data.to.substring(0, 3).toUpperCase(),
-  //         departureDate: data.departureDate,
-  //         ...(data.returnDate && { returnDate: data.returnDate }),
-  //         adults: parseInt(data.passengers.charAt(0)),
-  //         travelClass: data.passengers.includes("Economy")
-  //           ? "ECONOMY"
-  //           : "BUSINESS",
-  //         nonStop: tripType === "direct",
-  //         max: 10,
-  //       };
 
-  //       const results = await searchFlights(searchParams);
-  //       setFlights(results);
-  //       navigate("/results");
-  //     } catch (err) {
-  //       setError("Failed to fetch flights. Please try again.");
-  //     }
 
-  //     setLoading(false);
-  //   } else {
-  //     setShowContact(true);
-  //   }
-  // };
-  console.log("options", options);
-  console.log("options22", optionsTo);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
       <div className="flex gap-4 mb-2">
@@ -197,7 +172,14 @@ export function FlightSearchForm() {
             <Autocomplete
               options={options}
               getOptionLabel={(option) => option.name}
-              onInputChange={(event, newInputValue) => setSearch(newInputValue)}
+              onInputChange={(event, newInputValue) => {
+                const selectedOption = options.find(option => option.name === newInputValue);
+                if (selectedOption) {
+                  setSearch(selectedOption.iataCode);
+                } else {
+                  setSearch(newInputValue);
+                }
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -233,9 +215,14 @@ export function FlightSearchForm() {
             <Autocomplete
               options={optionsTo}
               getOptionLabel={(option) => option.name}
-              onInputChange={(event, newInputValue) =>
-                setSearchTo(newInputValue)
-              }
+              onInputChange={(event, newInputValue) => {
+                const selectedOption = optionsTo.find(option => option.name === newInputValue);
+                if (selectedOption) {
+                  setSearchTo(selectedOption.iataCode);
+                } else {
+                  setSearchTo(newInputValue);
+                }
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
