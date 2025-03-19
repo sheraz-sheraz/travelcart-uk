@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL:"http://localhost:8000/api",
-  //"https://travel-cart-uk-server.vercel.app/",
+  baseURL:"https://travel-cart-uk-server.vercel.app/",
   //"http://localhost:8000/api" ,
   // || "https://api.travelcart.com",
   timeout: 10000,
