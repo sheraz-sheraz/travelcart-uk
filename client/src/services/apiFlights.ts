@@ -35,8 +35,3 @@ const getFlightOffers = params => {
       }
     });
   };
-
-    export {
-        getFlightOffers,
-        confirmFlightOffer
-    };
