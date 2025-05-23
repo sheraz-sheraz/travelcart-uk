@@ -24,9 +24,11 @@ By proceeding with a booking, you confirm that you have read, understood, and ag
         <section>
           <h2 className="text-xl font-semibold">3. Booking and Payment</h2>
           <ul className="list-disc pl-5">
-            <li><strong>Booking Process:</strong> Bookings can be made through our website, by visiting our office in Ilford, or over the phone.</li>
-            <li><strong>Payment Terms:</strong> Full payment is required at the time of booking unless you opt for our "Book Now, Pay Later" scheme.</li>
-            <li><strong>Book Now, Pay Later:</strong> This option allows partial upfront payment with the remaining balance due before the travel date. Failure to pay on time results in cancellation without refund.</li>
+            <li><strong>Booking Process:</strong> Bookings can be made in person, by visiting our office in Ilford, or over the phone.</li>
+            <li><strong>Payment Terms:</strong> Full payment is required at the time of booking unless you opt for our "Book Now, Pay Later" scheme.Book now pay later is available on case to case basis and does not
+              apply to all bookings .</li>
+            <li><strong>Book Now, Pay Later:</strong> This option allows partial upfront payment with the remaining balance due before the travel date. Failure to pay on time results in cancellation without refund.
+              .</li>
           </ul>
         </section>
 
