@@ -15,7 +15,7 @@ By proceeding with a booking, you confirm that you have read, understood, and ag
         <section>
           <h2 className="text-xl font-semibold">2. Definitions</h2>
           <ul className="list-disc pl-5">
-            <li><strong>"We," "Us," "Our":</strong> Refers to Travelcart.uk.</li>
+            <li><strong>"We," "Us," "Our":</strong> Refers to Travelcart.uk. Company name: UK TRAVEL CART LIMITED Registered in England, Company number 16081474.</li>
             <li><strong>"You," "Customer":</strong> Refers to the individual accessing or using our services.</li>
             <li><strong>"Services":</strong> Refers to the flight booking services provided by TravelCart.uk.</li>
           </ul>
@@ -25,8 +25,9 @@ By proceeding with a booking, you confirm that you have read, understood, and ag
           <h2 className="text-xl font-semibold">3. Booking and Payment</h2>
           <ul className="list-disc pl-5">
             <li><strong>Booking Process:</strong> Bookings can be made in person, by visiting our office in Ilford, or over the phone.</li>
-            <li><strong>Payment Terms:</strong> Full payment is required at the time of booking unless you opt for our "Book Now, Pay Later" scheme.Book now pay later is available on case to case basis and does not
-              apply to all bookings .</li>
+            <li><strong>Payment Terms:</strong> Full payment is required at the time of booking unless you opt for our "Book Now, Pay Later" scheme.Book now pay later is available on case by case basis and does not
+              apply to all bookings.</li>
+            <li><strong>Deposit:</strong> Paying a deposit to hold your flight only guarantees the seat, not the price. Full payment is needed for ticket issuance and if not ticketed the airline can change the price.
             <li><strong>Book Now, Pay Later:</strong> This option allows partial upfront payment with the remaining balance due before the travel date. Failure to pay on time results in cancellation without refund.
               .</li>
           </ul>
