@@ -8,8 +8,9 @@ const TermsAndConditions = () => {
       <div className="space-y-6">
         <section>
           <h2 className="text-xl font-semibold">1. Introduction</h2>
-          <p>Welcome to Travelcart.uk. By accessing and using our website, you agree to comply with and be bound by the following Terms and Conditions. If you do not agree with any part of these terms, please do not use our services
-By proceeding with a booking, you confirm that you have read, understood and agreed to these Terms and Conditions. This agreement becomes effective upon confirmation of your booking..</p>
+          <p>Welcome to TravelCart.uk. These Terms and Conditions apply to all bookings made with us via our website, over the phone, via message, or in person at our office.
+
+By booking a flight or using our services, you confirm that you have read, understood, and agreed to these Terms and Conditions in full. If you do not agree with any part, please do not proceed with booking. This agreement becomes effective upon confirmation of your booking..</p>
         </section>
         
         <section>
