@@ -47,7 +47,7 @@ By booking a flight or using our services, you confirm that you have read, under
           <ul className="list-disc pl-5">
             <li><strong>Customer-Initiated Changes:</strong> Must be requested at least 72 hours before departure and may incur fees.</li>
             <li><strong>Airline-Initiated Changes:</strong> Will be communicated as per the airline's policy.</li>
-            <li><strong>Cancellations:</strong> Subject to airline policies. Refunds (if applicable) will follow these policies.</li>
+            <li><strong>Cancellations:</strong> Subject to airline policies + £100 Cancellation fee charged by travelcart.</li>
             <li><strong>No-Show Policy:</strong> Failure to board without prior notice may result in ticket forfeiture.</li>
           </ul>
         </section>
