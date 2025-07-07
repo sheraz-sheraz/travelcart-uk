@@ -27,9 +27,9 @@ By booking a flight or using our services, you confirm that you have read, under
           <ul className="list-disc pl-5">
             <li><strong>Booking Process:</strong> Bookings can be made in person, by visiting our office in Ilford, or over the phone.</li>
             <li><strong>Payment Terms:</strong> Full payment is required at the time of booking unless you opt for our "Book Now, Pay Later" scheme.Book now pay later is available on case by case basis and does not
-              apply to all bookings.Airline can withdraw a fare before any ticket is issued and we are not liable in this case.</li>
-            <li><strong>Deposit:</strong> Paying a deposit to hold your flight only guarantees the seat, not the price. Full payment is needed for ticket issuance and if not ticketed the airline can change the price.</li>
-            <li><strong>Book Now, Pay Later:</strong> This option allows partial upfront payment with the remaining balance due before the travel date. Failure to pay on time results in cancellation without refund.
+              apply to all bookings. Airline can withdraw a fare before any ticket is issued and we are not liable in this case.Third party payments are never allowed except in-person bookings.</li>
+            <li><strong>Deposit:</strong> Paying a deposit to hold your flight only guarantees the seat, not the price. Full payment is needed for ticket issuance and if not ticketed the airline can change the price.Depsots are non-refundable in case of cancellation.</li>
+            <li><strong>Book Now, Pay Later:</strong> This option allows a major part of your ticket as upfront payment and you get your ticket issued straight away with a time period to make remaining payment before your travel date.Failure to pay on time results in cancellation without refund.
               .</li>
           </ul>
         </section>
