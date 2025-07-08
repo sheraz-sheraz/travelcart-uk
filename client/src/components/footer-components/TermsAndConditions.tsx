@@ -45,7 +45,7 @@ By booking a flight or using our services, you confirm that you have read, under
         <section>
           <h2 className="text-xl font-semibold">5. Changes, Cancellations, and Refunds</h2>
           <ul className="list-disc pl-5">
-            <li><strong>Customer-Initiated Changes:</strong> Must be requested at least 72 hours before departure and depend on the airline's policy whether changeable/non-changeable. Travekacart.uk charges £100 service fee per ticket to process any changes on top of the airline charges.</li>
+            <li><strong>Customer-Initiated Changes:</strong> Must be requested at least 72 hours before departure and depend on the airline's policy whether changeable / non-changeable. Travelcart.uk charges £100 service fee per ticket to process any changes on top of the airline charges.</li>
             <li><strong>Airline-Initiated Changes:</strong> Will be communicated as per the airline's policy.Schedule changes are common and we inform our customers as soon as we receive an update from the airline.</li>
             <li><strong>Cancellations:</strong> Subject to airline policies + £100 Cancellation fee per ticket charged by travelcart.uk. Ticket maybe refundable/non-refundable depending on the airline's rules and regulations.</li>
             <li><strong>No-Show Policy:</strong> Failure to board without prior notice may result in ticket forfeiture.</li>
