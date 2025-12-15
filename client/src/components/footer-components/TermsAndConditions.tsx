@@ -10,7 +10,13 @@ const TermsAndConditions = () => {
           <h2 className="text-xl font-semibold">1. Introduction</h2>
           <p>Welcome to TravelCart.uk. These Terms and Conditions apply to all bookings made with us via our website, over the phone, via message, or in person at our office.
 
-By booking a flight or using our services, you confirm that you have read, understood, and agreed to these Terms and Conditions in full. If you do not agree with any part, please do not proceed with booking. This agreement becomes effective upon confirmation of your booking..</p>
+By booking a flight or using our services, you confirm that you have read, understood, and agreed to these Terms and Conditions in full. If you do not agree with any part, please do not proceed with booking. This agreement becomes effective upon confirmation of your booking.TravelCart.uk acts solely as an agent for airlines and other travel suppliers. When you book with us, you enter into:
+
+a contract with the airline for air transportation, and
+
+a separate contract with TravelCart.uk for booking, ticketing, and support services.
+
+TravelCart.uk is not the operating carrier and does not control flight operations, schedules, or cancellations...</p>
         </section>
         
         <section>
