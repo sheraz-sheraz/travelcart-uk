@@ -13,7 +13,7 @@ const TermsAndConditions = () => {
 By booking a flight or using our services, you confirm that you have read, understood, and agreed to these Terms and Conditions in full. If you do not agree with any part, please do not proceed with booking. This agreement becomes effective upon confirmation of your booking.
             TravelCart.uk acts solely as an agent for airlines and other travel suppliers. When you book with us, you enter into:
 
-* a contract with the airline for air transportation, and
+* a contract with the airline for air transportation, and</li>
 
 * a separate contract with TravelCart.uk for booking, ticketing, and support services.
 
