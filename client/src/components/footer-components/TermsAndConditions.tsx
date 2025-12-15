@@ -54,6 +54,10 @@ TravelCart.uk is not the operating carrier and does not control flight operation
           <ul className="list-disc pl-5">
             <li><strong>Customer-Initiated Changes:</strong> Must be requested at least 72 hours before departure and depend on the airline's policy whether changeable / non-changeable. Travelcart.uk charges £100 service fee per ticket to process any changes on top of the airline charges.</li>
             <li><strong>Airline-Initiated Changes:</strong> Will be communicated as per the airline's policy.Schedule changes are common and we inform our customers as soon as we receive an update from the airline.</li>
+            <p>In line with UK261 regulations, passengers may be entitled to:
+re-routing, or
+refund of the unused airline fare
+These rights apply to the airline portion only<p>
             <li><strong>Cancellations:</strong> Subject to airline policies + £100 Cancellation fee per ticket charged by travelcart.uk. Ticket maybe refundable/non-refundable depending on the airline's rules and regulations.</li>
             <li><strong>No-Show Policy:</strong> Failure to board without prior notice may result in ticket forfeiture.</li>
           </ul>
