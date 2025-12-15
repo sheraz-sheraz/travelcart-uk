@@ -13,7 +13,7 @@ const TermsAndConditions = () => {
 By booking a flight or using our services, you confirm that you have read, understood, and agreed to these Terms and Conditions in full. If you do not agree with any part, please do not proceed with booking. This agreement becomes effective upon confirmation of your booking.
             TravelCart.uk acts solely as an agent for airlines and other travel suppliers. When you book with us, you enter into:
 
-* a contract with the airline for air transportation, and</li>
+* a contract with the airline for air transportation, and
 
 * a separate contract with TravelCart.uk for booking, ticketing, and support services.
 
@@ -44,7 +44,7 @@ TravelCart.uk is not the operating carrier and does not control flight operation
         <section>
           <h2 className="text-xl font-semibold">4. Pricing and Fees</h2>
           <ul className="list-disc pl-5">
-            <li><strong>Transparent Pricing:</strong> All displayed prices include applicable taxes and fees.</li>
+            <li><strong>Transparent Pricing:</strong> All displayed prices include applicable taxes and fees.Plus a non-refundable booking and service fee, payable to TravelCart.uk for professional services already rendered..</li>
             <li><strong>Additional Charges:</strong> Optional services like baggage, seat selection, and meals may have extra charges.</li>
           </ul>
         </section>
